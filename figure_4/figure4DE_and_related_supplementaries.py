@@ -73,7 +73,7 @@ def return_unit_lifetimes(spikeTimes, spikesByCluster, num_units, days, time_bou
             
     return unit_lifetimes, unit_lifetime_matrix
 
-def calculate_global_PCA(spikeSites, spikesFilt_rs):
+def calculate_global_PCA(spikeSites, spikesFilt_rs, global_neigh, total_num_channels):
     """
     This function reduces the dimensionality of all spike waveforms detected in the concatenated session.
 
@@ -83,6 +83,10 @@ def calculate_global_PCA(spikeSites, spikesFilt_rs):
         Array from JRClust indicating the primary sites of each spike (subtracted 1 to convert to Python indexing).
     spikesFilt_rs : Array of float64
         KxMxN array from JRClust file (_filt.jrc) containing the filtered waveforms of each spike in K waveform samples, M recording contacts, N spikes
+    global_neigh : Array of int32
+        MxN array containing the neighboring channels of each recording contact, starting from the recording contact. M = number of contacts, N = number of neighbors
+    total_num_channels : int
+        Total number of recording contacts in the electrode arrays (in all bundles).
 
     Returns
     -------
@@ -344,19 +348,19 @@ single_unit_lifetimes37 = unit_lifetimes_37[single_units37]
 spikesFilt_dir = '/home/baran/Multiarea_bundle_data/rTBY35/combined/combined_filt.jrc'
 spikesFilt = np.fromfile(spikesFilt_dir, 'int16') * 0.195
 spikesFilt_rs = np.reshape(spikesFilt, [41,7,len(spikeTimes_35)], 'F')  
-ch_spikePCA_all = calculate_global_PCA(spikeSites_35, spikesFilt_rs)
+ch_spikePCA_all = calculate_global_PCA(spikeSites_35, spikesFilt_rs, global_neigh_35, total_num_channels)
 meanWfs_35, meanPCs_35, varPCs_35 = calculate_meanWf_meanPC(days_35, num_units_35, spikesFilt_rs, ch_spikePCA_all, unit_lifetime_matrix_35, spikesByCluster_35, spike_sessions_35, clusterSites_35, global_neigh_35)
 
 spikesFilt_dir = '/home/baran/Multiarea_bundle_data/rTBY37/combined/except_RSC/combined_filt.jrc'
 spikesFilt = np.fromfile(spikesFilt_dir, 'int16') * 0.195
 spikesFilt_rs = np.reshape(spikesFilt, [41,7,len(spikeTimes_37)], 'F')  
-ch_spikePCA_all = calculate_global_PCA(spikeSites_37, spikesFilt_rs)
+ch_spikePCA_all = calculate_global_PCA(spikeSites_37, spikesFilt_rs, global_neigh_37, total_num_channels)
 meanWfs_37, meanPCs_37, varPCs_37 = calculate_meanWf_meanPC(days_37, num_units_37, spikesFilt_rs, ch_spikePCA_all, unit_lifetime_matrix_37, spikesByCluster_37, spike_sessions_37, clusterSites_37, global_neigh_37)
 
 spikesFilt_dir = '/home/baran/Multiarea_bundle_data/rTBY37/combined/RSC/combined_filt.jrc'
 spikesFilt = np.fromfile(spikesFilt_dir, 'int16') * 0.195
 spikesFilt_rs = np.reshape(spikesFilt, [41,11,len(spikeTimes_37_rsc)], 'F')  
-ch_spikePCA_all = calculate_global_PCA(spikeSites_37_rsc, spikesFilt_rs)
+ch_spikePCA_all = calculate_global_PCA(spikeSites_37_rsc, spikesFilt_rs, global_neigh_37_rsc, total_num_channels)
 meanWfs_37_rsc, meanPCs_37_rsc, varPCs_37_rsc = calculate_meanWf_meanPC(days_37, num_units_37_rsc, spikesFilt_rs, ch_spikePCA_all, unit_lifetime_matrix_37_rsc, spikesByCluster_37_rsc, spike_sessions_37_rsc, clusterSites_37_rsc, global_neigh_37_rsc)
 
 #bundle identity of each unit
