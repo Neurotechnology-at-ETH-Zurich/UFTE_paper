@@ -265,8 +265,8 @@ disp('Plot Figure 5b')
 PlotFig5B;
 
 %% Grabbing activation strength around Sharp Wave Ripples for all ensembles.
-disp('Plot Figure 5e')
-
+disp('Plot Figure 5e');
+figure();
 Relative_Time=linspace(0,num_samples./sample_rate,length(Activities));
 time_on=Ripple.centerTimepoint-0.5;
 time_off=Ripple.centerTimepoint+0.5;%(ripples.timestamps(:,2));
@@ -289,20 +289,20 @@ for assembly_num=loopRange %[3 20 12 18 32 28]%size(Assembly_Activation_During_R
 
 
     if ~isempty(selected_assembly_plot);
-          subplot(length(selected_assembly_plot),1,counter)
+          subplot(length(selected_assembly_plot),1,counter);
 
     else isempty(selected_assembly_plot);
-         subplot(size(Assembly_Activation_During_Ripple_long,1),1,counter)
+         subplot(size(Assembly_Activation_During_Ripple_long,1),1,counter);
     end
 
-    patch_data_sig=squeeze(mean(Assembly_Activation_During_Ripple_long(assembly_num,:,:),3))
-    errBar=(std(squeeze(Assembly_Activation_During_Ripple_long(assembly_num,:,:))'))./sqrt(size(squeeze(Assembly_Activation_During_Ripple_long(assembly_num,:,:)),2))
-    plot(assembly_time,patch_data_sig,'LineWidth',2,'Color',color_for_stem( counter,:))
+    patch_data_sig=squeeze(mean(Assembly_Activation_During_Ripple_long(assembly_num,:,:),3));
+    errBar=(std(squeeze(Assembly_Activation_During_Ripple_long(assembly_num,:,:))'))./sqrt(size(squeeze(Assembly_Activation_During_Ripple_long(assembly_num,:,:)),2));
+    plot(assembly_time,patch_data_sig,'LineWidth',2,'Color',color_for_stem( counter,:));
 
-    p1 =   patch([assembly_time flip(assembly_time)], [patch_data_sig+errBar flip(patch_data_sig-errBar)],color_for_stem( counter,:))
-    p1.FaceAlpha=0.3
-    p1.LineStyle='--'
-    title(['Assembly ID:' num2str(assembly_num)])
+    p1 =   patch([assembly_time flip(assembly_time)], [patch_data_sig+errBar flip(patch_data_sig-errBar)],color_for_stem( counter,:));
+    p1.FaceAlpha=0.3;
+    p1.LineStyle='--';
+    title(['Assembly ID:' num2str(assembly_num)]);
 
     axis square
 
