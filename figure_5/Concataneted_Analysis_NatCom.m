@@ -264,3 +264,68 @@ Collect_Cells_Matrix_trig_assembly_activation;
 disp('Plot Figure 5b')
 PlotFig5B;
 
+%% Grabbing activation strength around Sharp Wave Ripples for all ensembles.
+disp('Plot Figure 5e')
+
+Relative_Time=linspace(0,num_samples./sample_rate,length(Activities));
+time_on=Ripple.centerTimepoint-0.5;
+time_off=Ripple.centerTimepoint+0.5;%(ripples.timestamps(:,2));
+center= Ripple.centerTimepoint;
+
+for darab_ripples=1:length(center);
+    Assembly_Activation_During_Ripple_long(:,:,darab_ripples)=Activities(:,find(time_on(darab_ripples) <Relative_Time & Relative_Time < time_off(darab_ripples)));
+end
+
+if ~isempty(selected_assembly_plot)
+    loopRange = selected_assembly_plot;
+else
+    loopRange = 1:size(Assembly_Activation_During_Ripple_long,1);
+end
+
+
+assembly_time=linspace(-500,500,40)
+counter=1
+for assembly_num=loopRange %[3 20 12 18 32 28]%size(Assembly_Activation_During_Ripple,1)
+
+
+    if ~isempty(selected_assembly_plot);
+          subplot(length(selected_assembly_plot),1,counter)
+
+    else isempty(selected_assembly_plot);
+         subplot(size(Assembly_Activation_During_Ripple_long,1),1,counter)
+    end
+
+    patch_data_sig=squeeze(mean(Assembly_Activation_During_Ripple_long(assembly_num,:,:),3))
+    errBar=(std(squeeze(Assembly_Activation_During_Ripple_long(assembly_num,:,:))'))./sqrt(size(squeeze(Assembly_Activation_During_Ripple_long(assembly_num,:,:)),2))
+    plot(assembly_time,patch_data_sig,'LineWidth',2,'Color',color_for_stem( counter,:))
+
+    p1 =   patch([assembly_time flip(assembly_time)], [patch_data_sig+errBar flip(patch_data_sig-errBar)],color_for_stem( counter,:))
+    p1.FaceAlpha=0.3
+    p1.LineStyle='--'
+    title(['Assembly ID:' num2str(assembly_num)])
+
+    axis square
+
+    Assembly_activation_during_SWR_mean(counter,:)= patch_data_sig; % mean activation strengh/ensemble for fig5d
+    Assembly_activation_during_SWR_SEM(counter,:)= errBar; % SEM activation strengh/ensemble for fig5d
+    counter=counter+1
+
+
+end
+
+%% Collect data for for python script to calculate lifetime of ensembly vs activation strengh of a given ensembly during shapr wave ripples fig5d-f
+
+
+%% We only focus on the activation strengh during Sharp Wave Ripple -25+25 around center. 
+
+time_on=Ripple.centerTimepoint-0.025;
+time_off=Ripple.centerTimepoint+0.025;%(ripples.timestamps(:,2));
+center= Ripple.centerTimepoint;
+
+%   data in Assembly_Activation_During_Ripple by a python script fig5df.py
+
+for darab_ripples=1:length(center);
+    Assembly_Activation_During_Ripple(:,darab_ripples)=mean(Activities(:,find(time_on(darab_ripples) <Relative_Time & Relative_Time < time_off(darab_ripples))),2);
+end
+
+disp('Additionally, we repeated this analysis and collected these values from other rats for Figures 5D and 5F.')
