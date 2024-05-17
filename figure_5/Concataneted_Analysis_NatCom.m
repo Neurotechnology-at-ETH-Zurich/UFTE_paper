@@ -282,8 +282,6 @@ if ~isempty(selected_assembly_plot);
 else
     loopRange = 1:size(Assembly_Activation_During_Ripple_long,1);
 end
-
-
 assembly_time=linspace(-500,500,40);
 counter=1;
 for assembly_num=loopRange %[3 20 12 18 32 28]%size(Assembly_Activation_During_Ripple,1)
@@ -303,9 +301,7 @@ for assembly_num=loopRange %[3 20 12 18 32 28]%size(Assembly_Activation_During_R
     p1.FaceAlpha=0.3;
     p1.LineStyle='--';
     title(['Assembly ID:' num2str(assembly_num)]);
-
     axis square
-
     Assembly_activation_during_SWR_mean(counter,:)= patch_data_sig; % mean activation strengh/ensemble for fig5d
     Assembly_activation_during_SWR_SEM(counter,:)= errBar; % SEM activation strengh/ensemble for fig5d
     counter=counter+1;
@@ -314,9 +310,7 @@ for assembly_num=loopRange %[3 20 12 18 32 28]%size(Assembly_Activation_During_R
 end
 
 %% Collect data for for python script to calculate lifetime of ensembly vs activation strengh of a given ensembly during shapr wave ripples fig5d-f
-
-
-%% We only focus on the activation strengh during Sharp Wave Ripple -25+25 around center. 
+% We only focus on the activation strengh during Sharp Wave Ripple -25+25 around center. 
 
 time_on=Ripple.centerTimepoint-0.025;
 time_off=Ripple.centerTimepoint+0.025;%(ripples.timestamps(:,2));
