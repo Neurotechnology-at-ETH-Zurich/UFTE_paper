@@ -283,8 +283,8 @@ else
 end
 
 
-assembly_time=linspace(-500,500,40)
-counter=1
+assembly_time=linspace(-500,500,40);
+counter=1;
 for assembly_num=loopRange %[3 20 12 18 32 28]%size(Assembly_Activation_During_Ripple,1)
 
 
