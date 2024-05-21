@@ -5,6 +5,7 @@ import math
 import mat73
 from scipy.io import loadmat
 import scipy
+import csv
 
 #Defining the probe site map, importing the chunk of data where the SWR from iHP and dHP are extracted
 
@@ -17,6 +18,8 @@ siteMap = [28,27,29,26,30,25,31,24,32,23,34,22,33,21,36,20,35,19,38,18,37,244,40
               247,138,198,181,197,182,186,201,185,202,134,243,133,139,250,140,196,179,195,180,188,203,187,204,132,241,131,141,251,
               142,252,177,193,178,190,205,189,206,130,238,129,143,194,145,253,147,254,149,255,151,192,153,191,155,128,144]
 
+#Plotting the SWR sample in dHPC and iHPC (code is only for plotting from the raw data; the data snippet is already provided 
+#in the Source File). 
 
 sample_rate = 20000
 num_channels = 256
@@ -36,7 +39,7 @@ time = np.arange(0,60,1/20000)
 b,a = butter(4,500/10000,'lowpass')
 data_filtered = filtfilt(b,a,data,axis=1)
 
-#Plotting a sample SWR from multiple channels of dHPC and saving the figure
+#dHPC
 
 start_time = 28.2
 end_time = 28.3
@@ -46,10 +49,8 @@ end_idx = int(end_time * sample_rate)
 plt.figure(figsize=[2,10])
 for i in np.arange(65,80):
     plt.plot(time[start_idx:end_idx],data_filtered[i][start_idx:end_idx]+i*1000, c='b') 
-plt.savefig('rTBY37_session8_dHP_ripple_snapshot.svg',dpi=500,format='svg')
 
-#Plotting a sample SWR from multiple channels of iHPC and saving the figure
-
+#iHPC
 start_time = 28.1
 end_time = 28.2
 start_idx = int(start_time * sample_rate)
@@ -59,9 +60,7 @@ plt.figure(figsize=[2,15])
 for i in np.arange(42,57):
     if i not in [50]: 
         plt.plot(time[start_idx:end_idx],data_filtered[i][start_idx:end_idx]+i*1500, c='r') 
-        
-plt.savefig('rTBY37_session8_iHP_ripple_snapshot.svg',dpi=500,format='svg')
-
+      
 #Loading the results of spike sorting
 
 data_dict = mat73.loadmat(folder+'/spike_sorting_results_except_RSC/amplifier_res.mat')
@@ -118,7 +117,7 @@ plt.figure(figsize=[5,5])
 plt.plot(cluster_spike_wavs[:,0:500],'b',alpha=0.05)
 plt.show()
 
-cluster = 
+cluster = 9
 cluster_spikes = spikesByCluster[cluster][0].astype(int) - 1
 cluster_spike_wavs = spikesFilt_rs[:,0,cluster_spikes]
 plt.figure(figsize=[5,5])
@@ -126,8 +125,51 @@ plt.plot(cluster_spike_wavs[:,0:500],'b',alpha=0.05)
 plt.show()
 
 #Generating the mPFC units subfigure 
+mpfc_wav_info = {4: [ -1,-1,-1,-1],
+                 5: [ -1,0,1,-1],
+                 6: [-1, 0, 1,-1],
+                 7: [-1, 0, 1,-1],
+                 8: [ 2, 3,-1,-1],
+                 9: [ 2, 3, 4,-1],
+                 10:[ 5, 3, 4,-1],
+                 11:[ 5, 6, 4,-1],
+                 12:[ 7,-1,-1,-1],
+                 13:[8,9,-1,-1],
+                 14:[11,9,10,12],
+                 15:[13,-1,10,12],
+                 16:[13,-1,-1,12],
+                 17:[-1,-1,-1,-1],
+                 18:[14,15,16,-1],
+                 19:[14,15,16,-1],
+                 20:[17,18,-1,-1],
+                 21:[17,18,-1,-1],
+                 22:[-1,-1,22,19],
+                 23:[20,21,22,19],
+                 24:[20,21,22,-1],
+                 25:[23,-1,-1,-1],
+                 26:[23,-1,-1,-1],
+                 27:[24,-1,-1,-1]}
 
-#Reading the data from the chunk of rTBY35/Sesson 18 which contains the DOWN -> UP state transition#plt.plot(time,data[213,:]-2000)
+cmap = plt.cm.get_cmap('nipy_spectral',33)
+
+color_id = np.arange(33)
+np.random.shuffle(color_id)
+
+fig, axs = plt.subplots(nrows=24,ncols=4,sharex='all',sharey='all',
+                        gridspec_kw={'wspace':0.1,'hspace':0.5},
+                       figsize=[3,20])
+for i in range(4,28):
+    for j in range(4):
+        unit_id = mpfc_wav_info[i][j]
+        if unit_id != -1:
+            axs[27-i,j].plot(mPFC_single_unit_wavs[:,i,unit_id],c=cmap(color_id[unit_id]),linewidth=3)
+            f = open('unit_{:}_ch_{:}_data.csv'.format(unit_id,i), 'w')
+            writer = csv.writer(f)
+            writer.writerow(mPFC_single_unit_wavs[:,i,unit_id])
+            f.close()
+        axs[27-i,j].axis('off')
+
+#Reading the data from the chunk of rTBY35/Session 18 which contains the DOWN -> UP state transition#plt.plot(time,data[213,:]-2000)
 chunk = 30
 folder = '/home/baran/Desktop/rTBY35_session18/'
 amplifier = folder + 'amplifier.dat'
@@ -165,7 +207,6 @@ for i in range(num_spike_samples):
 plt.figure()
 plt.plot(np.transpose(spike_wavs),'b',alpha=0.3)
 plt.show()
-#plt.savefig('rTBY35_session18_site130_unit_wav.svg')
 
 #code for generating panel B
 folder = '/home/baran/Desktop/rTBY34_session5/'
