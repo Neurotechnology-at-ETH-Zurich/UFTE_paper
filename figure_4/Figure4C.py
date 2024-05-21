@@ -10,8 +10,8 @@ import numpy as np
 from matplotlib import pyplot as plt
 from scipy import stats
 
-impedances = pd.read_csv('rTBY35_impedances.csv')
-phases = pd.read_csv('rTBY35_impedance_phases.csv')
+impedances = pd.read_csv('rat1_impedances.csv')
+phases = pd.read_csv('rat1_impedance_phases.csv')
 impedances = impedances.to_numpy()
 phases = phases.to_numpy()
 impedances = impedances[1:,:]
@@ -81,8 +81,8 @@ for i in range(len(days)):
     
 #%%   
 
-impedances = pd.read_csv('rTBY37_impedances.csv')
-phases = pd.read_csv('rTBY37_impedance_phases.csv')
+impedances = pd.read_csv('rat2_impedances.csv')
+phases = pd.read_csv('rat2_impedance_phases.csv')
 impedances = impedances.to_numpy()
 phases = phases.to_numpy()
 impedances = impedances[1:,:]
@@ -159,7 +159,6 @@ plt.plot(days_37[1:],impedance_stats_37[0,1:],color=color2)
 plt.fill_between(days_37[1:],impedance_stats_37[1,1:],impedance_stats_37[2,1:],alpha=0.1,color=color2)
 plt.yscale('log')
 plt.ylim([1e5,1e7])
-#plt.title('rTBY37')
 plt.ylabel('Impedances (Ohm)')
 plt.xlabel('Days')
 plt.show()    
