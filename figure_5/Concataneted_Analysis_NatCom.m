@@ -16,12 +16,12 @@ end
 % Loading the results of spike sorting from concatenated sessions.
 
 try
-    load('Figure_5.mat');
+    load('Figure_5_data.mat');
 
 % Activities - [number of assemblies x assembly activation strength per bin (bin = 25 ms)]
 % ActivityMatrix - [all individual units x z-scored firing rate]
 % AssemblyTemplates - [all individual neurons x assembly number (weight)]
-% r37 - [detected units per assembly x number of sessions]
+% NeuronTrackabilty_Assembly_rat2 - [detected units per assembly x number of sessions]
 % Ripple.TimeStamp - [number of ripples x (start, stop) times] in seconds; .eventID - 
 % label for the location where the ripple was detected; .centerTimepoints - center
 % of the Sharp Wave Ripple determined at the maximum power of ripples (150-200 Hz).
@@ -217,13 +217,13 @@ for assembly_num=loopRange
     Activity_strength_smoothed(assembly_num,:)=yi;
     yyaxis right
 
-% r37 is equal with Assembly_Activation_During_Ripple_rat2
 
-    u = repelem(r37(assembly_num,:),2);
-    pseudo_center_of_relative_times=zeros(1,length(repelem(r37(assembly_num,:),2)));
-    pseudo_center_of_relative_times(1:2:length(repelem(r37(assembly_num,:),2)))=center_of_relative_times(1:end-1);
-    pseudo_center_of_relative_times(2:2:length(repelem(r37(assembly_num,:),2)))=center_of_relative_times(2:end);
-    plot(pseudo_center_of_relative_times,repelem(r37(assembly_num,:),2),'LineWidth',2) 
+
+    u = repelem(NeuronTrackabilty_Assembly_rat2(assembly_num,:),2);
+    pseudo_center_of_relative_times=zeros(1,length(repelem(NeuronTrackabilty_Assembly_rat2(assembly_num,:),2)));
+    pseudo_center_of_relative_times(1:2:length(repelem(NeuronTrackabilty_Assembly_rat2(assembly_num,:),2)))=center_of_relative_times(1:end-1);
+    pseudo_center_of_relative_times(2:2:length(repelem(NeuronTrackabilty_Assembly_rat2(assembly_num,:),2)))=center_of_relative_times(2:end);
+    plot(pseudo_center_of_relative_times,repelem(NeuronTrackabilty_Assembly_rat2(assembly_num,:),2),'LineWidth',2) 
     ylim([0 1.1])
 
     xticks(center_of_relative_times(1:end-1)+([(diff(center_of_relative_times)./2)]))
