@@ -26,7 +26,7 @@ num_channels = 256
 chunk_size = 60
 chunk = 39
 
-folder = '/home/baran/Desktop/rTBY37_session8/'
+folder = 'rTBY37_session8/'
 amplifier = folder + 'amplifier.dat'
 start_idx = chunk * chunk_size * sample_rate * num_channels
 start_offset = int(start_idx*2)
@@ -171,7 +171,7 @@ for i in range(4,28):
 
 #Reading the data from the chunk of rTBY35/Session 18 which contains the DOWN -> UP state transition#plt.plot(time,data[213,:]-2000)
 chunk = 30
-folder = '/home/baran/Desktop/rTBY35_session18/'
+folder = 'rTBY35_session18/'
 amplifier = folder + 'amplifier.dat'
 start_idx = chunk * chunk_size * sample_rate * num_channels
 start_offset = int(start_idx*2)
@@ -209,7 +209,7 @@ plt.plot(np.transpose(spike_wavs),'b',alpha=0.3)
 plt.show()
 
 #code for generating panel B
-folder = '/home/baran/Desktop/rTBY34_session5/'
+folder = 'rTBY34_session5/'
 amplifier = folder + 'amplifier.dat'
 chunk = 58
 start_idx = chunk * chunk_size * sample_rate * num_channels
