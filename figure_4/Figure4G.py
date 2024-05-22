@@ -28,9 +28,9 @@ def calculate_fluo_intensities(imarray, radius_images):
         fluo[r] = imarray[non_zero_points[1],non_zero_points[0]]
     return fluo 
 
-neuron_image_dir = '/home/baran/Dropbox (Yanik Lab)/Multiarea rat recordings/Figures/Figure 4/material/AVG_TBY37_s1_n1_1776_1_12_neuron_4x4bins.tif'
-gfap_image_dir = '/home/baran/Dropbox (Yanik Lab)/Multiarea rat recordings/Figures/Figure 4/material/AVG_TBY37_s1_n1_1776_1_12_GFAP_4x4bins.tif'
-iba_image_dir = '/home/baran/Dropbox (Yanik Lab)/Multiarea rat recordings/Figures/Figure 4/material/AVG_TBY37_s1_n1_1776_1_12_IBA_4x4bins.tif'
+neuron_image_dir = 'AVG_TBY37_s1_n1_1776_1_12_neuron_4x4bins.tif'
+gfap_image_dir = 'AVG_TBY37_s1_n1_1776_1_12_GFAP_4x4bins.tif'
+iba_image_dir = 'AVG_TBY37_s1_n1_1776_1_12_IBA_4x4bins.tif'
 
 dr = 25
 line_begin = [14189/4, 2922/4]
@@ -97,6 +97,7 @@ neuron_fluo_ds = np.zeros((len(radii)-1,n_rand_sam))
 iba_fluo_ds = np.zeros((len(radii)-1,n_rand_sam))
 gfap_fluo_ds = np.zeros((len(radii)-1,n_rand_sam))
 
+##The choice of points is randomized in this segment of the code. The particular samples used in the figure are available in the Source File.
 for i in range(len(radii)-1):
     neuron_fluo_ds[i] = np.random.choice(neuron_fluo[i+1],n_rand_sam)
     iba_fluo_ds[i] = np.random.choice(iba_fluo[i+1],n_rand_sam)
