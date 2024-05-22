@@ -218,6 +218,8 @@ for assembly_num=loopRange
     Activity_strength_smoothed(assembly_num,:)=yi;
     yyaxis right
 
+% r37 is equal with Assembly_Activation_During_Ripple_rat2
+
     u = repelem(r37(assembly_num,:),2);
     pseudo_center_of_relative_times=zeros(1,length(repelem(r37(assembly_num,:),2)));
     pseudo_center_of_relative_times(1:2:length(repelem(r37(assembly_num,:),2)))=center_of_relative_times(1:end-1);
