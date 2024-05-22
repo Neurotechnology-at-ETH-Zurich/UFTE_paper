@@ -16,8 +16,7 @@ end
 % Loading the results of spike sorting from concatenated sessions.
 
 try
-    load('Github_Data.mat');
-
+    load('Figure_5.mat');
 
 % Activities - [number of assemblies x assembly activation strength per bin (bin = 25 ms)]
 % ActivityMatrix - [all individual units x z-scored firing rate]
