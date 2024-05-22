@@ -66,6 +66,8 @@ def return_unit_lifetimes(spikeTimes, spikesByCluster, num_units, days, time_bou
             unit_lifetimes[unit] = 0 
             
     return unit_lifetimes, unit_lifetime_matrix
+    
+Figure5_data = mat73.loadmat('Figure_5_data.mat') #Provided in Zenodo Repository
 
 #Defining parameters 
 sr = 20000 #Sample rate (Hz)
@@ -86,14 +88,14 @@ to_delete_35 = np.array([[28,0],[28,2],[28,3],[28,6],[39,4],[39,5],[40,7],[41,11
 to_delete_37 = np.array([[48,12],[48,13],[79,12],[82,7],[98,0],[98,13],[126,8],[130,21],[151,21],[156,18],[252,0],[264,5],[265,18],[273,18],[283,0],[283,3],[283,4],[283,9],[305,1],[309,5],[317,21],[320,10],[354,5],[354,6],[354,11]])
 
 #loading spike sorting results
-data_dict_35 = mat73.loadmat('/home/baran/Multiarea_bundle_data/rTBY35/combined/combined_res.mat')
-data_dict_37 = mat73.loadmat('/home/baran/Multiarea_bundle_data/rTBY37/combined/except_RSC/combined_res.mat')
-data_dict_37_rsc = mat73.loadmat('/home/baran/Multiarea_bundle_data/rTBY37/combined/RSC/combined_res.mat')
+data_dict_35 = mat73.loadmat('rTBY35_combined_res.mat')
+data_dict_37 = mat73.loadmat('rTBY37_except_RSC_combined_res.mat')
+data_dict_37_rsc = mat73.loadmat('rTBY37_RSC_combined_res.mat')
 
 #Loading JRClust parameter files
-prm_file_35 = '/home/baran/Multiarea_bundle_data/rTBY35/combined/combined.prm'
-prm_file_37 = '/home/baran/Multiarea_bundle_data/rTBY37/combined/except_RSC/combined.prm'
-prm_file_37_rsc = '/home/baran/Multiarea_bundle_data/rTBY37/combined/RSC/combined.prm'
+prm_file_35 = 'rTBY35_combined.prm'
+prm_file_37 = 'rTBY37_except_RSC_combined.prm'
+prm_file_37_rsc = 'rTBY37_RSC_combined.prm'
 
 #Loading the parameters from the JRClust result files
 spikeTimes_35 = data_dict_35['spikeTimes'] - 1 #Times of each spike in samples (python indexing)
@@ -117,37 +119,31 @@ unit_lifetimes_37_rsc, unit_lifetime_matrix_37_rsc = return_unit_lifetimes(spike
 unit_lifetime_matrix_37 = np.vstack((unit_lifetime_matrix_37, unit_lifetime_matrix_37_rsc))
 
 #%%
-#Loading the files with the ensemble activation and further ensemble information
-ens_info_35 = mat73.loadmat('/home/baran/Dropbox (Yanik Lab)/Multiarea rat recordings/Figures/Figure 5/Matlab_35.mat')
-ens_info_37 = mat73.loadmat('/home/baran/Dropbox (Yanik Lab)/Multiarea rat recordings/Figures/Figure 5/Matlab_37.mat')
-ens_activations_35_info_1 = mat73.loadmat('/home/baran/Dropbox (Yanik Lab)/Multiarea rat recordings/Figures/Figure 5/Matlab_35_Assembly_activations.mat')
-ens_activations_37_info_1 = mat73.loadmat('/home/baran/Dropbox (Yanik Lab)/Multiarea rat recordings/Figures/Figure 5/Matlab_37_Assembly_activations.mat')
-ens_activations_35_info = mat73.loadmat('/home/baran/Dropbox (Yanik Lab)/Multiarea rat recordings/Figures/Figure 5/Matlab_35_Assembly_activations_bigger_bin_smoothed.mat')
-ens_activations_37_info = mat73.loadmat('/home/baran/Dropbox (Yanik Lab)/Multiarea rat recordings/Figures/Figure 5/Matlab_37_Assembly_activations_bigger_bin_smoothed.mat')
-ens_activations_ripple_35 = mat73.loadmat('/home/baran/Dropbox (Yanik Lab)/Multiarea rat recordings/Figures/Figure 5/Assemby_Activation_During_Ripples_35.mat')['Assembly_Activation_During_Ripple']
-ens_activations_ripple_37 = mat73.loadmat('/home/baran/Dropbox (Yanik Lab)/Multiarea rat recordings/Figures/Figure 5/Assemby_Activation_During_Ripples_37.mat')['Assembly_Activation_During_Ripple']
+#Loading the variables with the ensemble activation and further ensemble information
+ens_activations_ripple_35 = Figure5_data['Assembly_Activation_During_Ripple_rat1']
+ens_activations_ripple_37 = Figure5_data['Assembly_Activation_During_Ripple_rat2']
 
 #Activations of ensembles over time
-ens_act_35 = ens_activations_35_info['Activity_strength_smoothed']
-ens_act_37 = ens_activations_37_info['Activity_strength_smoothed']
+ens_act_35 = Figure5_data['Activity_strength_smoothed_rat1']
+ens_act_37 = Figure5_data['Activity_strength_smoothed_rat2']
 
 #IDs of units that are part of ensembles
-ens_cellID_35 = (ens_info_35['Assembly_cellID'] - 1).astype('int')
-ens_cellID_37 = (ens_info_37['Assembly_cellID'] - 1).astype('int')
+ens_cellID_35 = (Figure5_data['Assembly_cellID_rat1'] - 1).astype('int')
+ens_cellID_37 = (Figure5_data['Assembly_cellID_rat2'] - 1).astype('int')
 
 #Participations of units in ensembles
-ens_cell_part_35 = ens_info_35['Significant_Neurons_Assemblies']
-ens_cell_part_37 = ens_info_37['Significant_Neurons_Assemblies']
+ens_cell_part_35 = Figure5_data['Significant_Neurons_Assemblies_rat1']
+ens_cell_part_37 = Figure5_data['Significant_Neurons_Assemblies_rat2']
 
 #Putative brain areas of units in ensembles
-ens_cell_structures_35 = np.array(ens_info_35['PutitativeStructure'])
-ens_cell_structures_37 = np.array(ens_info_37['PutitativeStructure'])
+ens_cell_structures_35 = np.array(Figure5_data['PutitativeStructure_rat1'])
+ens_cell_structures_37 = np.array(Figure5_data['PutitativeStructure_rat2'])
 
 #Lifetimes of units that are parts of ensembles
 ens_cell_lifetimes_35 = unit_lifetime_matrix_35[ens_cellID_35]
 ens_cell_lifetimes_37 = unit_lifetime_matrix_37[ens_cellID_37]
 
-#What percentage of units are detected in each ensembe in each session
+#What percentage of units are detected in each ensemble in each session
 ens_cell_part_perc_35 = np.zeros((ens_cell_part_35.shape[1], len(days_35)))
 ens_cell_part_perc_37 = np.zeros((ens_cell_part_37.shape[1], len(days_37)))
 
@@ -160,13 +156,13 @@ ens_act_ses_35 = np.zeros((len(days_35), ens_cell_part_35.shape[1]))
 ens_act_ses_37 = np.zeros((len(days_37), ens_cell_part_37.shape[1]))
 
 #Figuring out which bin in the ensemble activation traces correspond to which sessions
-rel_times_edges_35 = ens_activations_35_info_1['center_of_relative_times_edges']
+rel_times_edges_35 = Figure5_data['center_of_relative_times_edges_rat1']
 acu_time_35 = ens_activations_35_info['bin_activities']
 bin_sessions_35 = np.arange(len(acu_time_35))
 for i, sec in enumerate(acu_time_35):
     bin_sessions_35[i] = bisect_left(rel_times_edges_35[1:],sec)
 
-rel_times_edges_37 = ens_activations_37_info_1['center_of_relative_times_edges']
+rel_times_edges_37 = Figure5_data['center_of_relative_times_edges_rat2']
 acu_time_37 = ens_activations_37_info['bin_activities']
 bin_sessions_37 = np.arange(len(acu_time_37))
 for i, sec in enumerate(acu_time_37):
