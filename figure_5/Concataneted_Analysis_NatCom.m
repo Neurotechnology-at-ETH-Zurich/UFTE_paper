@@ -8,7 +8,7 @@ nChansInRawFile = 256;
 
 if ~isempty(FileInfo)  % If the raw data is accessible
     num_samples = FileInfo.bytes / (nChansInRawFile * 2);
-else  % If the raw data file is missing, use this default value to estimate the length of raw data in samples.
+elseif ismember(ratID,{'rTBY37'}) % If the raw data file is missing, use this default value to estimate the length of raw data in samples.
     num_samples = 595698304;
 end
 
@@ -17,16 +17,7 @@ end
 
 try
     load('Github_Data.mat');
-catch
-disp('Download row spikes from Drobpox')
-% Define the URL for direct download
-url = 'https://www.dropbox.com/scl/fi/moxem3u5df546wofs9jxz/Github_Data.mat?rlkey=oadoony6j03izk1koasauozjt&dl=1';
-outputFileName = 'downloaded_Github_Data.mat';
-% Download the file
-websave(outputFileName, url);
-% Load all variables from the .mat file into the workspace
-load(outputFileName);
-end
+
 
 % Activities - [number of assemblies x assembly activation strength per bin (bin = 25 ms)]
 % ActivityMatrix - [all individual units x z-scored firing rate]
@@ -690,3 +681,7 @@ for darab_ripples=1:length(center);
 end
 
 disp('Additionally, we repeated this analysis and collected these values ( Assembly_Activation_During_Ripple_XX) from other rats for Figures 5D and 5F.')
+
+catch
+    disp('Download row spikes from Zenodo (Link is provided in the manuscript)')
+end
