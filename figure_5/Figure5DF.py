@@ -7,6 +7,7 @@ Created on Fri Mar 15 11:44:13 2024
 """
 
 import mat73
+import scipy
 import numpy as np 
 from matplotlib import pyplot as plt
 from bisect import bisect_left
@@ -67,7 +68,7 @@ def return_unit_lifetimes(spikeTimes, spikesByCluster, num_units, days, time_bou
             
     return unit_lifetimes, unit_lifetime_matrix
     
-Figure5_data = mat73.loadmat('Figure_5_data.mat') #Provided in Zenodo Repository
+Figure5_data = scipy.io.loadmat('Figure_5_data.mat') #Provided in Zenodo Repository
 
 #Defining parameters 
 sr = 20000 #Sample rate (Hz)
@@ -157,13 +158,13 @@ ens_act_ses_37 = np.zeros((len(days_37), ens_cell_part_37.shape[1]))
 
 #Figuring out which bin in the ensemble activation traces correspond to which sessions
 rel_times_edges_35 = Figure5_data['center_of_relative_times_edges_rat1']
-acu_time_35 = ens_activations_35_info['bin_activities']
+acu_time_35 = Figure5_data['bin_activities']
 bin_sessions_35 = np.arange(len(acu_time_35))
 for i, sec in enumerate(acu_time_35):
     bin_sessions_35[i] = bisect_left(rel_times_edges_35[1:],sec)
 
 rel_times_edges_37 = Figure5_data['center_of_relative_times_edges_rat2']
-acu_time_37 = ens_activations_37_info['bin_activities']
+acu_time_37 = Figure5_data['bin_activities']
 bin_sessions_37 = np.arange(len(acu_time_37))
 for i, sec in enumerate(acu_time_37):
     bin_sessions_37[i] = bisect_left(rel_times_edges_37[1:],sec)
