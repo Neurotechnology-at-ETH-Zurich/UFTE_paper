@@ -16,7 +16,7 @@ end
 % Loading the results of spike sorting from concatenated sessions.
 
 try
-    load('Figure_5_data.mat');
+    load('Figure_5_data.mat'); %Provided in the Zenodo repository https://zenodo.org/records/11236154
 
 % Activities - [number of assemblies x assembly activation strength per bin (bin = 25 ms)]
 % ActivityMatrix - [all individual units x z-scored firing rate]
