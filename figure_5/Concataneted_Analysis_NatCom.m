@@ -164,7 +164,7 @@ sgtitle ("Weight of inter- and intra- areal (hippocampal and cortical) neuronal 
 figure(2)
 disp('plot Figure 5c')
 
-%% Assembly activation > 95th across concataneted sessions
+%% Assembly activation > 2std across concataneted sessions
 
 Percentiles=2*std(Activities');
 clear Activities_Assembly
